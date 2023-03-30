@@ -83,12 +83,14 @@ class EventController extends Controller
                         'errors' => $validator->errors(),
                     ], 422);
             }
+
             if($request->start > $request->end){
                 return response()->json([
-                    'status' => 200,
-                    'errors' =>  'Ngày kết thúc không được nhỏ hơn ngày bắt đầu',
-                ], 200);
+                    'status' => 422,
+                    'errors' =>  'Ngày kết thúc không được nhỏ hơn ngày bắt đầu.',
+                ], 422);
             }
+            
             else{
                 $event = Event::create([
                     'isEvents' => $request->isEvents,

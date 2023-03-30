@@ -1,19 +1,19 @@
 <template>
-    <div class="main-form">
+    <div class="main-form" >
            <div class="form_login">
                <h2>Login</h2>
-                <ul v-if="Object.keys(errorList).length > 0" style="margin: 10px 0px;">
-                  <li  style="color: red;font-size: 1.5rem;letter-spacing: 1.5; display: block;" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
+                <ul v-if="Object.keys(errorList).length > 0" style="margin: 10px 0px; display: block;">
+                  <li  style="color: red;font-size: 1.5rem;letter-spacing: 2; line-height: 1.5rem;" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
                 </ul>
                <form >
                    <div class="form_login-sub">
-                       <input type="email" class="text"  placeholder="Enter your email" v-model="form.email" maxlength="30" />
+                       <input type="email" class="text"  v-model="form.email"   autocomplete="new-eamil"  maxlength="30" placeholder="Enter your email" />
                        <div class="form_login-icon">
                           <i class="fa-solid fa-envelope before"></i>
                        </div>
                    </div>
                   <div class="form_login-sub">
-                        <input :type="passwordFieldType" class="password" name="Password" v-model="form.password" placeholder="Mật khẩu" required="" maxlength="30" />
+                        <input :type="passwordFieldType" class="password" name="password"  v-model="form.password" placeholder="Mật khẩu"   autocomplete="new-password" maxlength="30" />
                         <div class="form_login-icon">
                            <i class="fa fa-unlock-alt before" ></i>
                         </div>
@@ -61,6 +61,10 @@
                isLoading: false,
                fullPage:true,
            }
+
+       },
+       mounted() {
+         this.form.email = ""
        }
        ,
        methods:{

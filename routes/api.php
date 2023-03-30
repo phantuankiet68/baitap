@@ -41,14 +41,4 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::get('/home/search','search');
     });
 });
-Route::controller(EventController::class)->group(function(){
-    Route::post('/event/create','create');
-    Route::post('/remind/create','createRemind');
-    Route::put('/event/edit/{id}','update');
-    Route::put('/remind/edit/{id}','updateremind');
-    Route::delete('/event/edit/{id}','delete');
-    Route::get('/home/search','search');
-    Route::get('/home/events','events');
-    Route::get('/home/remind','reminds');
-    
-});
+

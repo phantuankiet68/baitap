@@ -1481,7 +1481,7 @@ html{
     height: auto;
     margin:auto;
     border-radius: 10px;
-    z-index: 600;
+    z-index: 90;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     background: #fff;
 
@@ -2705,30 +2705,7 @@ table {
 .vc-container{
     border: 1px solid #181616;
 }
-.datehome{
-   position: relative;
-   top: 0;
-   left: 0;
-}
-.vc-svg-icon path{
-    display: none;
-}
-.is-right{
-    display: none;
-}
-.subPre{
-    position: absolute;
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 0px;
-    z-index: 1000;
-}
-.subPre .subleft{
-    left: 0;
-    float: left;
-    cursor: pointer;
 
-}
 .subPre .subright{
     float: right;
     margin-left: 168px;

@@ -13,15 +13,6 @@ allSideMenu.forEach(item=> {
 
 
 
-const menuSibar = document.querySelector("#sidebar .create");
-const subMenu = document.getElementById("subMenu");
-
-if(menuSibar){
-	menuSibar.addEventListener('click', function () {
-		subMenu.classList.toggle('open-menu');
-	})
-}
-
 const menuNav = document.querySelector('.profile');
 const clickMenu = document.getElementById("clickMenu");
 if(menuNav){
@@ -44,7 +35,7 @@ const sidebar = document.getElementById('sidebar');
 
 if(menuBar){
 	menuBar.addEventListener('click', function () {
-		sidebar.classList.toggle('hide');
+		console.log(dd)
 	})
 }
 
@@ -80,3 +71,5 @@ if(toggle){
 		}
 	})
 }
+
+

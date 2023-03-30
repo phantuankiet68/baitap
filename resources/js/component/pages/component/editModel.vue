@@ -6,8 +6,6 @@
          </div>
          <div class="form__create">
             <a class="form__create-event" >Sự kiện</a>
-            <a class="form__create-remindar" @click.prevent="showEditRemind"> Lời nhắc
-            </a>
          </div>
          <div class="form__create">
             <span class="item_icons-2"><i class="fa-sharp fa-solid fa-clock"></i></span>
