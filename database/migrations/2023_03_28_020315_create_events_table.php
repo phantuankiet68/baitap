@@ -11,10 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reminds', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
+            $table->string('isEvents')->nullable();
             $table->string('title')->nullable();
             $table->datetime('start')->nullable();
+            $table->datetime('end')->nullable();
+            $table->string('color')->nullable();
+            $table->string('desc')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }
@@ -24,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reminds');
+        Schema::dropIfExists('events');
     }
 };

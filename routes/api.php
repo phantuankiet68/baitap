@@ -21,7 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::controller(AuthController::class)->group(function(){
     Route::post('login','login');
-    Route::post('register','signup');
+    Route::post('register','register');
     
 });
 Route::middleware(['auth:sanctum'])->group(function(){
@@ -32,16 +32,23 @@ Route::middleware(['auth:sanctum'])->group(function(){
     }); 
     Route::post('logout', 'App\Http\Controllers\API\AuthController@logout');   
     Route::get('home', 'App\Http\Controllers\API\EventController@index');
+    Route::controller(EventController::class)->group(function(){
+        Route::post('/event/create','create');
+        Route::post('/remind/create','createRemind');
+        Route::put('/event/edit/{id}','update');
+        Route::put('/remind/edit/{id}','updateremind');
+        Route::delete('/event/edit/{id}','delete');
+        Route::get('/home/search','search');
+    });
 });
 Route::controller(EventController::class)->group(function(){
     Route::post('/event/create','create');
+    Route::post('/remind/create','createRemind');
     Route::put('/event/edit/{id}','update');
+    Route::put('/remind/edit/{id}','updateremind');
     Route::delete('/event/edit/{id}','delete');
     Route::get('/home/search','search');
-});
-Route::controller(RemindController::class)->group(function(){
-    Route::post('/remind/create','create');
-    Route::put('/remind/edit/{id}','update');
-    Route::delete('/remind/edit/{id}','delete');
-    Route::get('/home/search','search');
+    Route::get('/home/events','events');
+    Route::get('/home/remind','reminds');
+    
 });

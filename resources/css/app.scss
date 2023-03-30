@@ -60,7 +60,9 @@ body {
 	font-size: 1.6rem;
 }
 
-
+.fc-direction-ltr .fc-daygrid-event .fc-event-time{
+    display: none;
+}
 /* login*/
 form {
     margin: 0 auto;
@@ -105,22 +107,27 @@ form {
     color: #00c6d7;
     font-size: 15px;
     line-height: 40px;
-    margin-left: 20px;
 }
-.form_login-icon .after {
-    color: #00c6d7;
-    font-size: 15px;
+.form_login-news i {
+    color: #676868;
+    font-size: 12px;
     line-height: 40px;
-    margin-left: 250px;
 }
-.form_login-icon {
-    display: flex;
+
+.form_login-news{
     position: absolute;
-    left: 0px;
     bottom: 0;
     width: 50px;
     height: 41px;
-    margin-left: 30px;
+    right: 39px;
+    text-align: center;
+}
+.form_login-icon {
+    margin-left: 25px;
+    position: absolute;
+    bottom: 0;
+    width: 50px;
+    height: 41px;
     text-align: center;
 }
 .submit_login {
@@ -134,7 +141,7 @@ form {
 }
 .form_login-sub .text, .password {
     width: 85%;
-    margin:0 40px;
+    margin:0 30px;
     padding: 10px 20px 12px 50px;
     border:1px solid #eee;
     font-size: 15px;
@@ -738,9 +745,7 @@ nav .exit-controll i{
     padding: 6px 15px;
     outline: none;
 }
-#content nav .profile{
-    margin-left:50px; 
-}
+
 #content nav select{
     padding: 6px 10px;
     outline: none;
@@ -1437,6 +1442,10 @@ html{
     float: left;
     border: .5px solid #b0b4b6;
 }
+.fc-direction-ltr .fc-daygrid-event.fc-event-end, .fc-direction-rtl .fc-daygrid-event.fc-event-start {
+    margin-right: 2px;
+    border: 1px solid #6ed0fd;
+}
 .fc-direction-ltr .fc-button-group>.fc-button:not(:last-child) {
     margin: 20px;
     font-size: 1.4rem;
@@ -1477,7 +1486,9 @@ html{
     background: #fff;
 
 }
-
+.dp__clear_icon path{
+    display: none;
+}
 .form__center{
     position: relative;
     padding:0 20px;
@@ -1522,10 +1533,6 @@ html{
     margin: 10px;
 }
 
-.dp__button{
-    display: none;
-}
-
 .form__create .color-input{
     margin-right: 40rem;
     padding: 20px;
@@ -1549,6 +1556,7 @@ html{
     outline: none;
     border: none;
     font-size: 1.8rem;
+    margin-left: 10px;
 }
 .form-control-input{
     margin-bottom: 2rem;
@@ -1569,7 +1577,7 @@ html{
     border-bottom: .5px solid #1668e4;
 }
 .form__create a{
-    margin:0 10px;
+    margin-left:35px;
 }
 .form__create .form__create-event{
     padding: 0.8rem 2rem;
@@ -2698,8 +2706,39 @@ table {
     border: 1px solid #181616;
 }
 .datehome{
+   position: relative;
    top: 0;
    left: 0;
+}
+.vc-svg-icon path{
+    display: none;
+}
+.is-right{
+    display: none;
+}
+.subPre{
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0px;
+    z-index: 1000;
+}
+.subPre .subleft{
+    left: 0;
+    float: left;
+    cursor: pointer;
+
+}
+.subPre .subright{
+    float: right;
+    margin-left: 168px;
+    cursor: pointer;
+}
+.subPre i{
+    align-items: center;
+    text-align: center;
+    font-size: 1.6rem;
+    width: 30px;
 }
 .dp__relative{
     border: none;
@@ -2750,8 +2789,12 @@ table {
     margin-bottom: 5px;
 }
 
-
-
+.vc-arrow{
+    display: none;
+}
+.subPre span{
+    padding: 5px 10px;
+}
 .btn-gettoday{
     padding: 10px 15px;
     border: none;

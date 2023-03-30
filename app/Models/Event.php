@@ -9,6 +9,7 @@ class Event extends Model
 {
     protected $primaryKey = 'id';
     protected $fillable = [
+        'isEvents',
         'title',
         'start',
         'end',

@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue'
-
+import alias from '@rollup/plugin-alias'
+import { resolve } from 'path'
+const projectRootDir = resolve(__dirname);
 
 export default defineConfig({
     plugins: [
@@ -11,5 +13,11 @@ export default defineConfig({
             
         }),
         vue(),
+        alias(),
     ],
+    resolve: {
+        alias: {
+          "@": resolve(projectRootDir, "resources/js/component"),
+        },
+    },
 });

@@ -5,6 +5,7 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@rollup/plugin-alias": "^4.0.3",
         "axios": "^1.1.2",
         "laravel-vite-plugin": "^0.7.2",
         "vite": "^4.0.0"
@@ -30,11 +31,13 @@
         "jquery-datetimepicker": "^2.5.21",
         "moment": "^2.29.4",
         "moment-timezone": "^0.5.41",
+        "pinia": "^2.0.33",
         "sass": "^1.58.3",
         "v-calendar": "^3.0.0-alpha.8",
         "verte": "^0.0.12",
         "vue": "^3.2.36",
         "vue-custom-datepicker": "^1.1.6",
+        "vue-date-picker": "^2.5.0",
         "vue-datepicker-next": "^1.0.2",
         "vue-loader": "^17.0.1",
         "vue-native-color-picker": "^1.2.0",

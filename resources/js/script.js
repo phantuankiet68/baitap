@@ -16,31 +16,45 @@ allSideMenu.forEach(item=> {
 const menuSibar = document.querySelector("#sidebar .create");
 const subMenu = document.getElementById("subMenu");
 
-menuSibar.addEventListener('click', function () {
-	subMenu.classList.toggle('open-menu');
-})
+if(menuSibar){
+	menuSibar.addEventListener('click', function () {
+		subMenu.classList.toggle('open-menu');
+	})
+}
+
 const menuNav = document.querySelector('.profile');
 const clickMenu = document.getElementById("clickMenu");
-
-menuNav.addEventListener('click', function () {
-	clickMenu.classList.toggle('open-menu');
-})
+if(menuNav){
+	menuNav.addEventListener('click', function () {
+		clickMenu.classList.toggle('open-menu');
+	})
+}
 const menuSelectd = document.querySelector('.selected');
 const SelectMenu = document.getElementById("clickSelected");
-
-menuSelectd.addEventListener('click', function () {
-	SelectMenu.classList.toggle('open-menu');
-})
-
+if(menuSelectd){
+	menuSelectd.addEventListener('click', function () {
+		SelectMenu.classList.toggle('open-menu');
+	})
+}
 
 
 // TOGGLE SIDEBAR
 const menuBar = document.querySelector('.menu_hamburger .bx-menu');
 const sidebar = document.getElementById('sidebar');
 
-menuBar.addEventListener('click', function () {
-	sidebar.classList.toggle('hide');
-})
+if(menuBar){
+	menuBar.addEventListener('click', function () {
+		sidebar.classList.toggle('hide');
+	})
+}
+
+const prev = document.getElementById('vc-svg-icon');
+
+if(menuBar){
+	menuBar.addEventListener('click', function () {
+		sidebar.classList.toggle('hide');
+	})
+}
 
 
 function fetch()
@@ -53,14 +67,16 @@ function fetch()
 
 
 
-const toggle = document.querySelector(".toggle"),
-input = document.querySelector("input");
+const toggle = document.querySelector(".toggle");
+const input = document.querySelector("input");
 
-toggle.addEventListener("click", () =>{
-	if(input.type ==="password"){
-	  input.type = "text";
-	  toggle.classList.replace("uil-eye-slash", "uil-eye");
-	}else{
-	  input.type = "password";
-	}
-})
+if(toggle){
+    toggle.addEventListener("click", () =>{
+		if(input.type ==="password"){
+			input.type = "text";
+			toggle.classList.replace("uil-eye-slash", "uil-eye");
+		}else{
+			input.type = "password";
+		}
+	})
+}

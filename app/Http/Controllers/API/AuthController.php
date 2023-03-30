@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+     /**
+        * login handle user
+        * @author KietPT
+    */
     public function login(Request $request){
         try {
             $validateUser = Validator::make($request->all(), 
@@ -47,7 +51,11 @@ class AuthController extends Controller
             ], 500);
         }
     }
-    public function signup(Request $request)
+    /**
+        * register handle user
+        * @author KietPT
+    */
+    public function register(Request $request)
     {
         try {
             //Validated
@@ -85,6 +93,10 @@ class AuthController extends Controller
             ], 500);
         }
     }
+    /**
+        * logout handle user
+        * @author KietPT
+    */
     public function logout(Request $request){
         $request->user()->tokens()->delete();
 
