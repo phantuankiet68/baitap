@@ -9,7 +9,7 @@
          </div>
          <div class="form__create">
             <span class="item_icons-1"><i class="fa-sharp fa-solid fa-clock"></i></span>
-            <VueDatePicker class="form-control" mode="dateTime" v-model="editr.start" auto-apply/>
+            <flatPickr class="modelEvents" v-model="editr.start"  :config="configs.dateTimePicker"  placeholder="Date Time"/>
          </div>
          <div class="form__create">
             <button  class="edit" @click.prevent="updateRemind()">update</button>
@@ -21,23 +21,29 @@
 
  <script>
 
-   import VueDatePicker from '@vuepic/vue-datepicker';
-   import '@vuepic/vue-datepicker/dist/main.css'
+      import flatPickr from 'vue-flatpickr-component';
+      import 'flatpickr/dist/flatpickr.css';
 
-   export default{
-      name: "Model",
-      props:{
-        editr:{
-            type: Object,
-            default: () =>{}
-         }
-      },
-      components:{
-         VueDatePicker
-      },
+      export default{
+         name: "Model",
+         props:{
+         editr:{
+               type: Object,
+               default: () =>{}
+            }
+         },
+         components:{
+            flatPickr
+         },
       data() {
          return {
-             errorList:'',
+            errorList:'',
+            configs: {
+               dateTimePicker: {
+                  enableTime: true,
+                  dateFormat: 'Y-m-d H:i'
+               },
+            }
          }
       },
       methods:{  

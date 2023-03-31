@@ -121,11 +121,9 @@
                 <span @click.prevent="closeModal"><i class="fa-solid fa-xmark"></i></span>
                 <strong><i class="fa-solid fa-bars"></i></strong>
             </div>
-            <ul v-if="Object.keys(errorList).length > 0" style=" margin:20px 50px; ">
-                <li  style="color: red; padding:1px;font-size: 1.5rem; line-height: normal;display: block;"  v-for="(error, index) in errorList" :key="index" >
-                    <span > {{ error[0] }}</span>
-                </li>
-            </ul>
+            <div class="form_error-list">
+                <span class="form_error_before" v-for="error in errorList" :key="error">{{ error[0]}}</span>
+            </div>
             <calendarModel @saveCalendar="saveCalendar" :form="newEvent"  @closeModal="closeModal" @showCR="showCR" />
         </div>
     </div>
@@ -135,9 +133,9 @@
                 <span @click.prevent="closeCR"><i class="fa-solid fa-xmark"></i></span>
                 <strong><i class="fa-solid fa-bars"></i></strong>
             </div>
-            <ul style="margin: 10px 20px;">
-                <li  style="color: red;font-size: 1.6rem;display: block;margin-left: 30px;margin-top: 10px;" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
-            </ul>
+            <div class="form_error-list">
+                <span class="form_error_before" v-for="error in errorList" :key="error">{{ error[0]}}</span>
+            </div>
             <remindModel v-if="showRemind" @closeCR="closeCR" :remind="newRemind" @saveRemind="saveRemind" @showEvents="showEvents"/>
         </div>
     </div>
@@ -147,9 +145,9 @@
                 <span @click.prevent="closeEdit"><i class="fa-solid fa-xmark"></i></span>
                 <strong><i class="fa-solid fa-bars"></i></strong>
             </div>
-            <ul  v-if="Object.keys(errorList).length > 0" style="margin: 10px 20px;">
-                <li  style="color: red;font-size: 1.5rem;display: block;    margin-left: 30px;" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
-            </ul>
+            <div class="form_error-list">
+                <span class="form_error_before" v-for="error in errorList" :key="error">{{ error[0]}}</span>
+            </div>
             <editModel @showEditRemind="showEditRemind" @updateEvent="updateEvent"  @deleteEvent="deleteEvent"   :edit="editEvent"  @closeEdit="closeEdit" />
         </div>
     </div>
@@ -159,9 +157,9 @@
                 <span @click.prevent="closeEditRemind"><i class="fa-solid fa-xmark"></i></span>
                 <strong><i class="fa-solid fa-bars"></i></strong>
             </div>
-            <ul  v-if="Object.keys(errorList).length > 0" style="margin: 10px 20px;">
-                <li  style="color: red;font-size: 1.5rem;display: block;    margin-left: 30px;" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
-            </ul>
+            <div class="form_error-list">
+                <span class="form_error_before" v-for="error in errorList" :key="error">{{ error[0]}}</span>
+            </div>
             <editRemind @updateRemind="updateRemind"  @deleteEvent="deleteEvent"  :editr="editRemind"  @closeEditRemind="closeEditRemind" />
         </div>
     </div>
@@ -189,7 +187,7 @@
     export default {
         name:'Home',
         components:{
-            fullCalendar,calendarModel,editModel,remindModel,editRemind,Loading,sidebar
+            fullCalendar,calendarModel,editModel,remindModel,editRemind,Loading,sidebar,
         },
         data() {
             return {
@@ -238,27 +236,28 @@
                     initialView: 'dayGridMonth',
                     dateClick: this.handleDateClick,
                     eventClick: this.handleEventClick,
-                    locales:allLocales,
-                    locale:'en-US',
+                    locales: allLocales,
+                    locale: 'en-US',
                     timeZone: 'local',
                     editable: true,
                     indexToUpdate: "",
                     timeZone: 'UTC',
-                    showNonCurrentDates:true,
-                    datesSet:this.handleDateProfile,
+                    showNonCurrentDates: true,
+                    datesSet: this.handleDateProfile,
                     events: [],
 				},
                 indexToUpdate: "",
                 isLoading: false,
-                fullPage:true,
-                datename:'tháng',
+                fullPage: true,
+                datename: 'tháng',
                 dataCalendar: [],
+                dataCalendarEnd: [],
                 modelConfig: {
                     type: 'string',
                     mask: 'YYYY-DD-MM',
                 },
-                date:'',
-                checked:true  
+                date: '',
+                checked: true, 
             };
            
         },
@@ -270,62 +269,54 @@
         },
         methods:{
             handleDateProfile(e){
-                this.dateNowHome = e.startStr
+                this.dateNowHome = e.startStr;
             },
             refeser(){
                 this.newEvent = {
-                    isEvents:'1',
-                    title:'',
-                    start:'',
-                    end:'',
-                    desc:'',
-                    color:'',
-                    user_id:''
+                    isEvents: '1',
+                    title: '',
+                    start: '',
+                    end: '',
+                    desc: '',
+                    color: '',
+                    user_id: ''
                 },
                 this.newRemind ={
-                    isEvents:'2',
-                    title:'',
-                    start:'',
-                    color:'#6200ee',
-                    desc:'1',
-                    user_id:''
+                    isEvents: '2',
+                    title: '',
+                    start: '',
+                    color: '#6200ee',
+                    desc: '1',
+                    user_id: ''
                 },
-                this.errorList = ""
+                this.errorList = "";
             },
             showEvents(){
-                this.showModel = true
-                this.showRemind = false
-                this.error[0] = null
+                this.showModel = true;
+                this.showRemind = false;
+                this.error[0] = null;
             },
             getEventSource(){
-                // this.$data.calendarOptions.eventSources = [
-                // {
-                //     events(start, Callback) {
-                        const token = localStorage.getItem(TOKEN)
-                        axios.get('/api/home',{
-                            headers:{
-                                Authorization: ' Bearer ' + token
-                            }
-                        })
-                        .then(response => {
-                            const events = [];
-                            response.data.events.forEach(item => {
-                                events.push({
-                                    ...item,
-                                    dateEndCustom: item.end,
-                                });
-                            });
-                            this.calendarOptions.events = events;
-                            // Callback(response.data.events)
-                        })
-                //     },
-                //     color: 'yellow'
-
-                // },
-                // ];
+                const token = localStorage.getItem(TOKEN);
+                axios.get('/api/home',{
+                    headers:{
+                        Authorization: ' Bearer ' + token
+                    }
+                })
+                .then(response => {
+                    const events = [];
+                    response.data.events.forEach(item => {
+                    events.push({
+                        ...item,
+                        dateEndCustom: item.end,
+                        dateStartCustom: item.start,
+                    });
+                });
+                  this.calendarOptions.events = events;
+                })
             },
             getInfoAdmin(){
-                const token = localStorage.getItem(TOKEN)
+                const token = localStorage.getItem(TOKEN);
                 axios.get('/api/user',{
                     headers:{
                         Authorization: ' Bearer ' + token
@@ -338,29 +329,30 @@
                 })
             },
             createPopup(){
-                this.showModel = true
+                this.showModel = true;
                 this.refeser();
             },
             handleEventClick(info){
                 if(info.event._def.extendedProps.isEvents == 1){
-                    this.EditEvent = true
+                    this.EditEvent = true;
                 }
                 if(info.event._def.extendedProps.isEvents == 2){
-                    this.EditRemind = true
+                    this.EditRemind = true;
                 }
-                this.indexToUpdate = info.event.id
-                this.editEvent.title = info.event._def.title
-                this.editEvent.desc = info.event._def.extendedProps.desc
-                this.editEvent.start = info.event.start
-                this.editEvent.color = info.event.backgroundColor
-                this.editEvent.end = info.event._def.extendedProps.dateEndCustom
-                this.editRemind.title = info.event._def.title
-                this.editRemind.start = info.event.start
+                this.indexToUpdate = info.event.id;
+                this.editEvent.title = info.event._def.title;
+                this.editEvent.desc = info.event._def.extendedProps.desc;
+                this.editEvent.start = info.event.start;
+                this.editEvent.color = info.event.backgroundColor;
+                this.editEvent.end = info.event._def.extendedProps.dateEndCustom;
+                this.editEvent.start = info.event._def.extendedProps.dateStartCustom;
+                this.editRemind.title = info.event._def.title;
+                this.editRemind.start = info.event._def.extendedProps.dateStartCustom;
             },
            
             handleDateClick(e){
-                this.showModel = true
-                this.setModel(e)
+                this.showModel = true;
+                this.setModel(e);
                 this.refeser();
 			},
             refeser(){
@@ -370,23 +362,17 @@
                     this.newRemind.title=  null
             },
             setModel(obj){
-                let dateTimeStart = obj.dateStr.toLocaleString()
-                let dateTimeEnd = obj.dateStr.toLocaleString()
-                this.newEvent.start = dateTimeStart
-                this.newEvent.end = dateTimeEnd
-                this.newRemind.start = dateTimeStart
-                if(this.showModel){
-                    this.newEvent.isEvents = "1"
-                }
-                else{
-                    this.newEvent.isEvents = "2"
-                }
+                let dateTimeStart = obj.dateStr;
+                let dateTimeEnd = obj.dateStr;
+                this.newEvent.start = dateTimeStart;
+                this.newEvent.end = dateTimeEnd;
+                this.newRemind.start = dateTimeStart;
             },
 
             saveRemind(){
                 var mythis = this;
                 this.isLoading =true;
-                const token = localStorage.getItem(TOKEN)
+                const token = localStorage.getItem(TOKEN);
                 axios.post('/api/remind/create', this.newRemind,{
                     headers:{
                         Authorization: ' Bearer ' + token
@@ -394,17 +380,15 @@
                 })
                 .then(response =>{
                     alert(response.data.message);
-                    setTimeout(() => {this.isLoading = false},2000)
+                    setTimeout(() => {this.isLoading = false},1000);
                     this.closeCR();
                     this.getEventSource();
-                    this
                 })
                 .catch(function (error){
-                    console.log(error.response)
                     if(error.response){
                         if (error.response.status == 422) {
                             mythis.errorList = error.response.data.errors;
-                            setTimeout(() => {mythis.isLoading = false},2000)
+                            setTimeout(() => {mythis.isLoading = false},1000);
                         }
                         else if (error.request) {
                             console.log(error.request);
@@ -417,14 +401,14 @@
             saveCalendar(){
                 var mythis = this;
                 this.isLoading =true;
-                const token = localStorage.getItem(TOKEN)
+                const token = localStorage.getItem(TOKEN);
                 axios.post('/api/event/create', this.newEvent,{
                     headers:{
                         Authorization: ' Bearer ' + token
                     }
                 })
                 .then(response =>{
-                    setTimeout(() => {this.isLoading = false},2000)
+                    setTimeout(() => {this.isLoading = false},1000);
                     alert(response.data.message);
                     this.closeModal();
                     this.getEventSource();
@@ -433,7 +417,7 @@
                     if(error.response){
                     if (error.response.status == 422) {
                         mythis.errorList = error.response.data.errors;
-                        setTimeout(() => {mythis.isLoading = false},2000)
+                        setTimeout(() => {mythis.isLoading = false},1000);
                     }
                     else if (error.request) {
                         console.log(error.request);
@@ -446,7 +430,7 @@
             updateEvent() {
                 var mythis = this;
                 this.isLoading =true;
-                const token = localStorage.getItem(TOKEN)
+                const token = localStorage.getItem(TOKEN);
                 var edit = '/api/event/edit/' + this.indexToUpdate;
                 axios.put(edit, this.editEvent,{
                     headers:{
@@ -457,12 +441,13 @@
                    alert(response.data.message);
                    this.closeEdit();
                    this.getEventSource();
-                   setTimeout(() => {this.isLoading = false},2000)
+                   setTimeout(() => {this.isLoading = false},1000);
                })
                .catch(function (error){
                    if(error.response){
-                       if (error.response.status == 404) {
+                       if (error.response.status == 422) {
                            mythis.errorList = error.response.data.errors;
+                           setTimeout(() => {mythis.isLoading = false},1000);
                        }
                        else if (error.request) {
                            console.log(error.request);
@@ -475,7 +460,7 @@
             updateRemind() {
                 this.isLoading =true;
                 var mythis = this;
-                const token = localStorage.getItem(TOKEN)
+                const token = localStorage.getItem(TOKEN);
                 var edit = '/api/remind/edit/' + this.indexToUpdate;
                 axios.put(edit, this.editRemind,{
                     headers:{
@@ -485,28 +470,28 @@
                .then(response =>{
                    alert(response.data.message);
                    this. closeEditRemind();
-                   this.loading = false
                    this.getEventSource();
-                   setTimeout(() => {this.isLoading = false},2000)
+                   setTimeout(() => {this.isLoading = false},2000);
 
                })
                .catch(function (error){
                    if(error.response){
-                       if (error.response.status == 404) {
+                        if (error.response.status == 422) {
                            mythis.errorList = error.response.data.errors;
-                       }
-                       else if (error.request) {
+                           setTimeout(() => {mythis.isLoading = false},1000);
+                        }
+                        else if (error.request) {
                            console.log(error.request);
-                       } else {
-                           console.log('Error', error.message);
-                       }
+                        } else {
+                            console.log('Error', error.message);
+                        }
                    }
                })
             },
 
             deleteEvent() {
                 this.isLoading =true;
-                const token = localStorage.getItem(TOKEN)
+                const token = localStorage.getItem(TOKEN);
                 var remove = '/api/event/edit/' + this.indexToUpdate;
                 axios.delete(remove,{
                     headers:{
@@ -517,72 +502,72 @@
                    alert(response.data.message);
                    this.closeEdit();
                    this.getEventSource();
-                   setTimeout(() => {this.isLoading = false},2000)
+                   setTimeout(() => {this.isLoading = false},2000);
                })
                .catch(function (error){
-                  console.log('Không thể xóa')
+                  console.log('Không thể xóa');
                })
             },
            
             logout(){
-                localStorage.removeItem('token')
-                this.$router.push("/")
+                localStorage.removeItem('token');
+                this.$router.push("/");
             },
             getDay() {
 				let calendarApi = this.$refs.fullCalendar.getApi();
                 calendarApi.changeView('timeGridDay');
-                this.datename = "Ngày"
+                this.datename = "Ngày";
 			},
             getMonth() {
 				let calendarApi = this.$refs.fullCalendar.getApi();
                 calendarApi.changeView('dayGridMonth');
-                this.datename = "Tháng"
+                this.datename = "Tháng";
 			},
 			getYears() {
 				let calendarApi = this.$refs.fullCalendar.getApi();
                 calendarApi.changeView('multiMonthYear');
-                this.datename = "Năm"
+                this.datename = "Năm";
 			},
 			getNext(e) {
-				let calendarApi = this.$refs.fullCalendar.getApi()
-                calendarApi.next()
+				let calendarApi = this.$refs.fullCalendar.getApi();
+                calendarApi.next();
                 
 			},
 			getPrev(e) {
-				let calendarApi = this.$refs.fullCalendar.getApi()
-                calendarApi.prev()
+				let calendarApi = this.$refs.fullCalendar.getApi();
+                calendarApi.prev();
 			},
 			getToday() {
-				let calendarApi = this.$refs.fullCalendar.getApi()
-                calendarApi.today()
+				let calendarApi = this.$refs.fullCalendar.getApi();
+                calendarApi.today();
                 
 			},
             closeCR(){
-                this.showRemind = false
-                this.errorList = ""
+                this.showRemind = false;
+                this.errorList = "";
             },
             showCR(){
-               this.showRemind = true
+               this.showRemind = true;
                this.showModel = false;
             },
             showEditRemind(){
-                this.EditRemind = true
+                this.EditRemind = true;
                 this.EditEvent = false;
             },
             closeModal(arg){
                 this.showModel = false;
-                this.errorList = ""
+                this.errorList = "";
             },
             closeEdit(arg){
                 this.EditEvent = false;
             },
             onDayClick(e){
-                const date = new Date().toString()
-                let calendarApi = this.$refs.fullCalendar.getApi()
-                calendarApi.gotoDate(e.id)                
+                const date = new Date().toString();
+                let calendarApi = this.$refs.fullCalendar.getApi();
+                calendarApi.gotoDate(e.id);            
             },
             closeEditRemind(){
-               this.EditRemind = false
+               this.EditRemind = false;
             },
         },
         watch: {

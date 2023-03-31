@@ -2,8 +2,8 @@
     <div class="main-form" >
            <div class="form_login">
                <h2>Login</h2>
-                <ul v-if="Object.keys(errorList).length > 0" style="margin: 10px 0px; display: block;">
-                  <li  style="color: red;font-size: 1.5rem;letter-spacing: 2; line-height: 1.5rem;" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
+                <ul v-if="Object.keys(errorList).length > 0" class="error-login">
+                   <li class="classEoror" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
                 </ul>
                <form >
                    <div class="form_login-sub">

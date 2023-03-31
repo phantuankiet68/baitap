@@ -10,7 +10,7 @@
       </div>
       <div class="form__create">
          <span class="item_icons-1"><i class="fa-sharp fa-solid fa-clock"></i></span>
-         <VueDatePicker class="form-control" mode="dateTime" v-model="remind.start" auto-apply/>
+         <flatPickr class="modelEvents" v-model="remind.start"  :config="configs.dateTimePicker"  placeholder="Date Time"/>
       </div>
       <div class="form__create">
          <button  class="create" @click.prevent="saveRemind()">Lưu</button>
@@ -21,11 +21,11 @@
 
  <script>
 
-   import VueDatePicker from '@vuepic/vue-datepicker';
-   import '@vuepic/vue-datepicker/dist/main.css'
+   import flatPickr from 'vue-flatpickr-component';
+   import 'flatpickr/dist/flatpickr.css';
 
    export default{
-      name: "Model",
+      name: "remindModel",
       props:{
          remind:{
             type: Object,
@@ -33,11 +33,17 @@
          }
       },
       components:{
-         VueDatePicker
+         flatPickr 
       },
       data() {
          return {
-             errorList:'',
+            errorList:'',
+            configs: {
+               dateTimePicker: {
+                  enableTime: true,
+                  dateFormat: 'Y-m-d H:i'
+               },
+            }
          }
       },
       methods:{  

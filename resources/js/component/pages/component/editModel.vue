@@ -9,8 +9,8 @@
          </div>
          <div class="form__create">
             <span class="item_icons-2"><i class="fa-sharp fa-solid fa-clock"></i></span>
-            <VueDatePicker class="form-control"  mode="dateTime"  v-model="edit.start" auto-apply />
-            <VueDatePicker class="form-control"  mode="dateTime" v-model="edit.end" auto-apply/>
+            <flatPickr class="modelEvents" v-model="edit.start"  :config="configs.dateTimePicker"  placeholder="Date Time"/>
+            <flatPickr class="modelEvents" v-model="edit.end"  :config="configs.dateTimePicker"  placeholder="Date Time"/>
           </div>
          <div class="form__create">
             <span class="item_icons-2"><i class="fa-sharp fa-solid fa-bars-staggered"></i></span>
@@ -31,10 +31,10 @@
  </template>
  <script>
 
-      import VueDatePicker from '@vuepic/vue-datepicker';
-      import '@vuepic/vue-datepicker/dist/main.css'
+      import flatPickr from 'vue-flatpickr-component';
+      import 'flatpickr/dist/flatpickr.css';
       export default {
-      name: "Model",
+      name: "editModel",
       props:{
          edit:{
             type: Object,
@@ -43,11 +43,17 @@
       },
       data() {
          return {
-             errorList:'',
+            errorList:'',
+            configs: {
+               dateTimePicker: {
+                  enableTime: true,
+                  dateFormat: 'Y-m-d H:i'
+               },
+            }
          }
       },
       components:{
-         VueDatePicker 
+         flatPickr
       },
       mounted(){
         this.eventId = this.$route.params.id;

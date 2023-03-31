@@ -19,6 +19,15 @@ li {
 .fa{
     font-size: 2.6rem;
 }
+.error-login{
+    margin: 20px 20px; 
+}
+.classEoror{
+    color: red;
+    font-size: 1.5rem;
+    letter-spacing: 2; 
+    line-height: 1.5rem;
+}
 
 hr{
     margin: 0 3.5rem 2rem 3.5rem;
@@ -1543,15 +1552,21 @@ html{
     margin-bottom: 2rem;
 }
 .form__create input{
-    height: 4rem;
     outline: none;
     border: none;
     font-size: 1.5rem;
+}
+.form__create .modelEvents{
+     width: 150px;
+     height: 20px;
+     background-color: none;
+     margin: 0 10px;
 }
 .form__create-color{
     border-radius: 50%;
     height: 4rem;
     width: 4rem;
+    margin: 0 10px;
 }
 .form__create .text-input{
     width: 36rem;
@@ -2218,10 +2233,16 @@ table {
     font-size: 1.1rem;
     font-family: 'Open Sans', 'Helvetica News', sans-serif;
   }
-  
+.errorForm{
+    padding:1px;
+    margin-left: 20px;
+    font-size: 1.5rem; 
+    line-height: normal;
+    color: red; 
+}
   .hr {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   
   .br {
@@ -2255,7 +2276,18 @@ table {
     height: 200px;
     border: 50%;
   }
-  
+  .form_error-list{
+     margin:10px 50px;
+     font-size: 1.5rem;
+     color: red;
+     display: block;
+  }
+  .form_error_before{
+    margin:10px 10px;
+    font-size: 1.5rem;
+    color: red;
+    display: block;
+  }
   /*==================== SERVICES ====================*/
   .services_container {
     margin-top: 1rem;

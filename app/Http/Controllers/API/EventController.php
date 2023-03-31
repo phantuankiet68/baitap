@@ -23,37 +23,7 @@ class EventController extends Controller
             $events = Event::where('user_id',$user->id)->get();
             return response()->json(array(
                 'events' => $events,
-            ),200);
-
-        }catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
-    }
-    public function events(Request $request,Event $event){    
-        try{
-            $user = $request->user();
-            $events = Event::where('isEvents','=', '1')->get();
-            return response()->json(array(
-                'events' => $events,
-            ),200);
-
-        }catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
-    }
-    public function reminds(Request $request,Event $event){    
-        try{
-            $user = $request->user();
-            $events = Event::where('isEvents','=', '2')->get();
-            return response()->json(array(
-                'events' => $events,
-            ),200);
+            ), 200);
 
         }catch (\Throwable $th) {
             return response()->json([
@@ -63,31 +33,62 @@ class EventController extends Controller
         }
     }
     /**
-        * add event calendar
-        * @author KietPT
+    * show events
+    * @author KietPT
+    */
+    public function events(Request $request,Event $event){    
+        try{
+            $user = $request->user();
+            $events = Event::where('isEvents','=', '1')->get();
+            return response()->json(array(
+                'events' => $events,
+            ), 200);
+
+        }catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+    /**
+    * show reminds
+    * @author KietPT
+    */
+    public function reminds(Request $request,Event $event){    
+        try{
+            $user = $request->user();
+            $events = Event::where('isEvents','=', '2')->get();
+            return response()->json(array(
+                'events' => $events,
+            ), 200);
+
+        }catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+    /**
+    * add event
+    * @author KietPT
     */
     public function create(Request $request){
         try{
            $validator = Validator::make($request->all(),[
             'isEvents' => 'required',
             'title' => 'required|max:150',
-            'start'=> 'required',
+            'start'=> 'required|before:end',
             'end'=> 'required',
             'color'=> 'required',
             'desc'=> 'required|max:250',
             'user_id'=> 'required',
             ]);
             if($validator->fails()){
-                    return response()->json([
-                        'status' => 422,
-                        'errors' => $validator->errors(),
-                    ], 422);
-            }
-
-            if($request->start > $request->end){
                 return response()->json([
                     'status' => 422,
-                    'errors' =>  'Ngày kết thúc không được nhỏ hơn ngày bắt đầu.',
+                    'errors' => $validator->errors(),
                 ], 422);
             }
             
@@ -100,7 +101,6 @@ class EventController extends Controller
                     'color' => $request->color,
                     'desc' => $request->desc,
                     'user_id' => $request->user_id,
-
                 ]);
                 if($event){
                     return response()->json([
@@ -124,8 +124,8 @@ class EventController extends Controller
         }
     }
     /**
-        * create Remind 
-        * @author KietPT
+    * add reminds
+    * @author KietPT
     */
     public function createRemind(Request $request){
         $validator = Validator::make($request->all(),[
@@ -140,7 +140,7 @@ class EventController extends Controller
             return response()->json([
                 'status' => 422,
                 'errors' => $validator->messages(),
-            ],422);
+            ], 422);
         }
         else{
             $event = Event::create([
@@ -168,13 +168,13 @@ class EventController extends Controller
         }
     }
     /**
-        * update event calendar
-        * @author KietPT
+    * update event calendar
+    * @author KietPT
     */
     public function update(Request $request,$id){
         $validator = Validator::make($request->all(),[
             'title' => 'required|max:150',
-            'start'=> 'required',
+            'start'=> 'required|before:end',
             'end'=> 'required',
             'color'=> 'required',
             'desc'=> 'required|max:250',
@@ -208,8 +208,8 @@ class EventController extends Controller
         }
     }
     /**
-        * update event calendar
-        * @author KietPT
+    * update reminds calendar
+    * @author KietPT
     */
     public function updateremind(Request $request,$id){
         $validator = Validator::make($request->all(),[
@@ -242,8 +242,8 @@ class EventController extends Controller
         }
     }
     /**
-        * delete event calendar
-        * @author KietPT
+    * delete event calendar
+    * @author KietPT
     */
     public function delete($id){
         $event = Event::find($id);

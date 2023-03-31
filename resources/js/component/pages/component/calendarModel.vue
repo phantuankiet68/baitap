@@ -10,8 +10,8 @@
          </div>
          <div class="form__create">
             <span class="item_icons-2"><i class="fa-sharp fa-solid fa-clock"></i></span>
-            <VueDatePicker mode="date"  v-model="form.start"  max-range="7" min-range="3"  :multiple= "true" vertical />
-            <VueDatePicker  mode="date" v-model="form.end"   max-range="7" min-range="3" vertical/>
+            <flatPickr class="modelEvents" v-model="form.start"  :config="configs.dateTimePicker"  placeholder="Date Time"/>
+            <flatPickr class="modelEvents" v-model="form.end"  :config="configs.dateTimePicker" placeholder="Date Time"/>
          </div>
          <div class="form__create">
             <span class="item_icons-2"><i class="fa-sharp fa-solid fa-bars-staggered"></i></span>
@@ -30,10 +30,8 @@
    </div>
  </template>
  <script>
-
-      import VueDatePicker from '@vuepic/vue-datepicker';
-      import '@vuepic/vue-datepicker/dist/main.css'
-      
+      import flatPickr from 'vue-flatpickr-component';
+      import 'flatpickr/dist/flatpickr.css';
       export default {
       name: "EventModel",
       props:{
@@ -43,12 +41,22 @@
          },
       },
       components:{
-         VueDatePicker,
+         flatPickr
       },
       data() {
          return {
-             datepicker : null
+            datepicker : null,
+            configs: {
+               dateTimePicker: {
+                  enableTime: true,
+                  dateFormat: 'Y-m-d H:i'
+               },
+            }
          }
+      },
+    
+      mounted(){
+
       },
       methods:{
          closeModal(){

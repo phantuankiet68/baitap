@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-     /**
-        * login handle user
-        * @author KietPT
+    /**
+    * login handle user
+    * @author KietPT
     */
     public function login(Request $request){
         try {
@@ -52,8 +52,8 @@ class AuthController extends Controller
         }
     }
     /**
-        * register handle user
-        * @author KietPT
+    * register handle user
+    * @author KietPT
     */
     public function register(Request $request)
     {
@@ -94,8 +94,8 @@ class AuthController extends Controller
         }
     }
     /**
-        * logout handle user
-        * @author KietPT
+    * logout handle user
+    * @author KietPT
     */
     public function logout(Request $request){
         $request->user()->tokens()->delete();

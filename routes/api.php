@@ -32,6 +32,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
     }); 
     Route::post('logout', 'App\Http\Controllers\API\AuthController@logout');   
     Route::get('home', 'App\Http\Controllers\API\EventController@index');
+    Route::get('home/remind', 'App\Http\Controllers\API\EventController@reminds');
+    Route::get('home/event', 'App\Http\Controllers\API\EventController@events');
     Route::controller(EventController::class)->group(function(){
         Route::post('/event/create','create');
         Route::post('/remind/create','createRemind');

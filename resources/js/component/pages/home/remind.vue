@@ -4,26 +4,8 @@
         <i class="fa fa-solid fa-bars bx-menu"></i>
     </div>
     <section id="sidebar">
-		<a href="#" class="brand">
-            <i class="fa fa-solid fa-bars bx-menu"></i>
-			<img src="../image/logo.png">
-			<span class=".text-title">Lịch</span>
-		</a>
-		<div class="create">
-			<div href="" class="create_choose" >
-				<svg width="36" height="36" viewBox="0 0 36 36"><path fill="#34A853" d="M16 16v14h4V20z"></path><path fill="#4285F4" d="M30 16H20l-4 4h14z"></path><path fill="#FBBC05" d="M6 16v4h10l4-4z"></path><path fill="#EA4335" d="M20 16V6h-4v14z"></path><path fill="none" d="M0 0h36v36H0z"></path></svg>
-			    <span class="create_text" @click="createPopup" >Create</span>
-			</div>
-		</div>
-		<div class="datehome">
-            <div class="subPre">
-                <span class="subleft" @click="$refs.calendar.movePrev()">
-                    <i class="fa-solid fa-chevron-left" @click="getPrev"></i>
-                </span>
-                <span class="subright"  @click="$refs.calendar.moveNext()">
-                    <i class="fa-solid fa-chevron-right" @click="getNext"></i>
-                </span>
-            </div>
+        <sidebar @createPopup="createPopup" />
+        <div class="datehome">
             <DatePicker v-model="date"  ref="calendar"  color="red" @dayclick="onDayClick" mode="date"  :model-config="modelConfig"/>
 		</div>
 		<ul class="side-menu top"> 
@@ -32,7 +14,6 @@
                 <i class="fa-solid fa-chevron-right"></i>
 			</li>
             <li >
-                
 				<a >
                     <router-link to="/home">
                         <i>
@@ -43,8 +24,8 @@
 				</a>
 			</li>
             <li >
-                <a >
-                    <router-link to="/home">
+				<a >
+                    <router-link to="/home/event-m">
                         <i>
                             <input type="checkbox" name=""  id="">
                         </i>
@@ -53,34 +34,33 @@
 				</a>
 			</li>
             <li >
-				<a >
+                <a >
                     <i>
-                        <router-link  to="/home/event-m">
+                        <router-link  to="/home/remind-m">
                             <input type="checkbox" id="checkbox" v-model="checked"  name="" >
                         </router-link>
                     </i>
                     <span class="text">Remind</span>
-				</a>
+                </a>
 			</li>
            
 		</ul>
-	</section>
+    </section>
 	<!-- CONTENT -->
-	<section id="content">
-        
+	<section id="content">    
         <nav>
-            <a  class="notification">
+            <a  class="notification" >
                 <input type="button" class="btn-gettoday" @click="getToday" value="Hôm nay">
             </a>
-            <a  class="notification">
-                <i class="fas fa-solid fa-chevron-left"  @click="getNext"></i>
+            <a  class="notification" @click="$refs.calendar.movePrev()">
+                <i class="fas fa-solid fa-chevron-left"  @click="getPrev"></i>
             </a>
-            <a  class="notification">
-                <i class="fas fa-solid fa-chevron-right" @click="getPrev"></i>
+            <a  class="notification" @click="$refs.calendar.moveNext()">
+                <i class="fas fa-solid fa-chevron-right" @click="getNext"></i>
             </a>
             <a  class="title" >
                 <span id="externalTitle" class=".fc-event-title-form">
-                    Tháng {{ moment(title).format("MM, YYYY") }}
+                   Tháng {{ moment(dateNowHome).format("MM, YYYY") }}
                 </span>
             </a>
             <router-link to="/home" class="exit-controll"><i class='bx bx-left-arrow-alt'></i></router-link>
@@ -132,7 +112,7 @@
             </a>
         </nav>
         <main class="main" @click.prevent="closeModal">
-            <fullCalendar ref="fullCalendar"   :options="calendarOptions"  />    
+            <fullCalendar ref="fullCalendar"   :options="calendarOptions"/>    
         </main>
     </section>
     <div class="modal" v-if="showModel">
@@ -141,21 +121,21 @@
                 <span @click.prevent="closeModal"><i class="fa-solid fa-xmark"></i></span>
                 <strong><i class="fa-solid fa-bars"></i></strong>
             </div>
-            <ul  v-if="Object.keys(errorList).length > 0" style="margin: 10px 20px;">
-                <li  style="color: red;font-size: 1.5rem;display: block;margin-left: 30px;" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
-            </ul>
+            <div class="form_error-list">
+                <span class="form_error_before" v-for="error in errorList" :key="error">{{ error[0]}}</span>
+            </div>
             <calendarModel @saveCalendar="saveCalendar" :form="newEvent"  @closeModal="closeModal" @showCR="showCR" />
         </div>
     </div>
     <div class="modal" v-if="showRemind">
         <div class="modal__body">
             <div class="form__center">
-                <span @click.prevent="closeModal"><i class="fa-solid fa-xmark"></i></span>
+                <span @click.prevent="closeCR"><i class="fa-solid fa-xmark"></i></span>
                 <strong><i class="fa-solid fa-bars"></i></strong>
             </div>
-            <ul  v-if="Object.keys(errorList).length > 0" style="margin: 10px 20px;">
-                <li  style="color: red;font-size: 1.6rem;display: block;margin-left: 30px;margin-top: 10px;" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
-            </ul>
+            <div class="form_error-list">
+                <span class="form_error_before" v-for="error in errorList" :key="error">{{ error[0]}}</span>
+            </div>
             <remindModel v-if="showRemind" @closeCR="closeCR" :remind="newRemind" @saveRemind="saveRemind" @showEvents="showEvents"/>
         </div>
     </div>
@@ -165,9 +145,9 @@
                 <span @click.prevent="closeEdit"><i class="fa-solid fa-xmark"></i></span>
                 <strong><i class="fa-solid fa-bars"></i></strong>
             </div>
-            <ul  v-if="Object.keys(errorList).length > 0" style="margin: 10px 20px;">
-                <li  style="color: red;font-size: 1.5rem;display: block;    margin-left: 30px;" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
-            </ul>
+            <div class="form_error-list">
+                <span class="form_error_before" v-for="error in errorList" :key="error">{{ error[0]}}</span>
+            </div>
             <editModel @showEditRemind="showEditRemind" @updateEvent="updateEvent"  @deleteEvent="deleteEvent"   :edit="editEvent"  @closeEdit="closeEdit" />
         </div>
     </div>
@@ -177,9 +157,9 @@
                 <span @click.prevent="closeEditRemind"><i class="fa-solid fa-xmark"></i></span>
                 <strong><i class="fa-solid fa-bars"></i></strong>
             </div>
-            <ul  v-if="Object.keys(errorList).length > 0" style="margin: 10px 20px;">
-                <li  style="color: red;font-size: 1.5rem;display: block;    margin-left: 30px;" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
-            </ul>
+            <div class="form_error-list">
+                <span class="form_error_before" v-for="error in errorList" :key="error">{{ error[0]}}</span>
+            </div>
             <editRemind @updateRemind="updateRemind"  @deleteEvent="deleteEvent"  :editr="editRemind"  @closeEditRemind="closeEditRemind" />
         </div>
     </div>
@@ -189,6 +169,7 @@
 </template>
 <script >
     import moment from "moment";
+    import sidebar from './layouts/sidebar.vue'
 	import fullCalendar from '@fullcalendar/vue3'
     import calendarModel from '@/pages/component/calendarModel.vue'
     import remindModel from '@/pages/component/remindModel.vue'
@@ -201,22 +182,23 @@
     import allLocales from '@fullcalendar/core/locales-all';
     import Loading from 'vue3-loading-overlay';
     import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
+    import {TOKEN} from '../../constant/index.js'
     
     export default {
         name:'Home',
         components:{
-            fullCalendar,calendarModel,editModel,remindModel,editRemind,Loading
+            fullCalendar,calendarModel,editModel,remindModel,editRemind,Loading,sidebar,
         },
         data() {
             return {
                 date:null,
-                title:'',
+                dateNowHome:null,
                 EditEvent: false,
                 EditRemind: false,
                 showModel: false,
                 showRemind:false,
                 moment: moment,
-                errorList:'',
+                errorList:[],
                 newEvent:{
                     isEvents:'1',
                     title:'',
@@ -249,29 +231,33 @@
                 token:[],
                 users:[],
                 name:'',
-                checked:true    ,
 				calendarOptions: {
 					plugins: [ interactionPlugin,dayGridPlugin,timeGrid,multiMonthPlugin ],
                     initialView: 'dayGridMonth',
                     dateClick: this.handleDateClick,
                     eventClick: this.handleEventClick,
-                    locales:allLocales,
-                    locale:'en-US',
+                    locales: allLocales,
+                    locale: 'en-US',
                     timeZone: 'local',
                     editable: true,
                     indexToUpdate: "",
                     timeZone: 'UTC',
-                    progressiveEventRendering:true
+                    showNonCurrentDates: true,
+                    datesSet: this.handleDateProfile,
+                    events: [],
 				},
+                indexToUpdate: "",
+                isLoading: false,
+                fullPage: true,
+                datename: 'tháng',
+                dataCalendar: [],
+                dataCalendarEnd: [],
                 modelConfig: {
                     type: 'string',
                     mask: 'YYYY-DD-MM',
                 },
-                indexToUpdate: "",
-                isLoading: false,
-                fullPage:true,
-                title: new Date(),
-                datename:'tháng'
+                date: '',
+                checked: true, 
             };
            
         },
@@ -282,58 +268,55 @@
             this.refeser();
         },
         methods:{
+            handleDateProfile(e){
+                this.dateNowHome = e.startStr;
+            },
             refeser(){
                 this.newEvent = {
-                    isEvents:'1',
-                    title:'',
-                    start:'',
-                    end:'',
-                    desc:'',
-                    color:'',
-                    user_id:''
+                    isEvents: '1',
+                    title: '',
+                    start: '',
+                    end: '',
+                    desc: '',
+                    color: '',
+                    user_id: ''
                 },
                 this.newRemind ={
-                    isEvents:'2',
-                    title:'',
-                    start:'',
-                    color:'#6200ee',
-                    desc:'1',
-                    user_id:''
-                }
+                    isEvents: '2',
+                    title: '',
+                    start: '',
+                    color: '#6200ee',
+                    desc: '1',
+                    user_id: ''
+                },
+                this.errorList = "";
             },
             showEvents(){
-                this.showModel = true
-                this.showRemind = false
-            },
-            choose(){
-                const startDate = new Date();
-                const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
-                date.value = [startDate, endDate];
+                this.showModel = true;
+                this.showRemind = false;
+                this.error[0] = null;
             },
             getEventSource(){
-                this.$data.calendarOptions.eventSources = [
-                {
-                    events(start, failureCallback) {
-                        const token = localStorage.getItem('token')
-                        axios.get('/api/home/remind',{
-                            headers:{
-                                Authorization: ' Bearer ' + token
-                            }
-                        })
-                        .then(response => {
-                            failureCallback(response.data.events)
-                        })
-                    },
-                    color: 'yellow'
-
-                },
-                ];
-            },
-            closeEditRemind(){
-               this.EditRemind = false
+                const token = localStorage.getItem(TOKEN);
+                axios.get('/api/home/remind',{
+                    headers:{
+                        Authorization: ' Bearer ' + token
+                    }
+                })
+                .then(response => {
+                    const events = [];
+                    response.data.events.forEach(item => {
+                    events.push({
+                        ...item,
+                        dateEndCustom: item.end,
+                        dateStartCustom: item.start,
+                    });
+                });
+                  this.calendarOptions.events = events;
+                })
             },
             getInfoAdmin(){
-                const token = localStorage.getItem('token')
+                const token = localStorage.getItem(TOKEN);
                 axios.get('/api/user',{
                     headers:{
                         Authorization: ' Bearer ' + token
@@ -346,30 +329,30 @@
                 })
             },
             createPopup(){
-                this.showModel = true
+                this.showModel = true;
+                this.refeser();
             },
             handleEventClick(info){
-
                 if(info.event._def.extendedProps.isEvents == 1){
-                    this.EditEvent = true
+                    this.EditEvent = true;
                 }
                 if(info.event._def.extendedProps.isEvents == 2){
-                    this.EditRemind = true
+                    this.EditRemind = true;
                 }
-                this.indexToUpdate = info.event.id
-                this.editEvent.title = info.event._def.title
-                this.editEvent.desc = info.event._def.extendedProps.desc
-                this.editEvent.start = info.event.start
-                this.editEvent.color = info.event.backgroundColor
-                this.editEvent.end = info.event.end
-                this.editRemind.title = info.event._def.title
-                this.editRemind.start = info.event.start
-                this. errorList = ''
+                this.indexToUpdate = info.event.id;
+                this.editEvent.title = info.event._def.title;
+                this.editEvent.desc = info.event._def.extendedProps.desc;
+                this.editEvent.start = info.event.start;
+                this.editEvent.color = info.event.backgroundColor;
+                this.editEvent.end = info.event._def.extendedProps.dateEndCustom;
+                this.editEvent.start = info.event._def.extendedProps.dateStartCustom;
+                this.editRemind.title = info.event._def.title;
+                this.editRemind.start = info.event._def.extendedProps.dateStartCustom;
             },
            
             handleDateClick(e){
-                this.showModel = true
-                this.setModel(e)
+                this.showModel = true;
+                this.setModel(e);
                 this.refeser();
 			},
             refeser(){
@@ -379,41 +362,33 @@
                     this.newRemind.title=  null
             },
             setModel(obj){
-                let dateTimeStart = obj.dateStr.toLocaleString()
-                let dateTimeEnd = obj.dateStr.toLocaleString()
-                this.newEvent.start = dateTimeStart
-                this.newEvent.end = dateTimeEnd
-                this.newRemind.start = dateTimeStart
-                if(this.showModel){
-                    this.newEvent.isEvents = "1"
-                }
-                else{
-                    this.newEvent.isEvents = "2"
-                }
+                let dateTimeStart = obj.dateStr;
+                let dateTimeEnd = obj.dateStr;
+                this.newEvent.start = dateTimeStart;
+                this.newEvent.end = dateTimeEnd;
+                this.newRemind.start = dateTimeStart;
             },
 
-            onDayClick(e){
-                const date = new Date().toString()
-                let calendarApi = this.$refs.fullCalendar.getApi()
-                calendarApi.gotoDate(e.id)                
-                this.title = e.ariaLabel
-            },
             saveRemind(){
                 var mythis = this;
                 this.isLoading =true;
-                axios.post('/api/remind/create', this.newRemind)
+                const token = localStorage.getItem(TOKEN);
+                axios.post('/api/remind/create', this.newRemind,{
+                    headers:{
+                        Authorization: ' Bearer ' + token
+                    }
+                })
                 .then(response =>{
                     alert(response.data.message);
+                    setTimeout(() => {this.isLoading = false},1000);
                     this.closeCR();
                     this.getEventSource();
-                    setTimeout(() => {this.isLoading = false},2000)
                 })
                 .catch(function (error){
-                    console.log(error.response)
                     if(error.response){
                         if (error.response.status == 422) {
                             mythis.errorList = error.response.data.errors;
-                            mythis.isLoading = false
+                            setTimeout(() => {mythis.isLoading = false},1000);
                         }
                         else if (error.request) {
                             console.log(error.request);
@@ -426,18 +401,23 @@
             saveCalendar(){
                 var mythis = this;
                 this.isLoading =true;
-                axios.post('/api/event/create', this.newEvent)
+                const token = localStorage.getItem(TOKEN);
+                axios.post('/api/event/create', this.newEvent,{
+                    headers:{
+                        Authorization: ' Bearer ' + token
+                    }
+                })
                 .then(response =>{
+                    setTimeout(() => {this.isLoading = false},1000);
                     alert(response.data.message);
                     this.closeModal();
-                    setTimeout(() => {this.isLoading = false},2000)
                     this.getEventSource();
                 })
                 .catch(function (error){
                     if(error.response){
                     if (error.response.status == 422) {
                         mythis.errorList = error.response.data.errors;
-                        mythis.isLoading = false
+                        setTimeout(() => {mythis.isLoading = false},1000);
                     }
                     else if (error.request) {
                         console.log(error.request);
@@ -450,18 +430,24 @@
             updateEvent() {
                 var mythis = this;
                 this.isLoading =true;
+                const token = localStorage.getItem(TOKEN);
                 var edit = '/api/event/edit/' + this.indexToUpdate;
-                axios.put(edit, this.editEvent)
+                axios.put(edit, this.editEvent,{
+                    headers:{
+                        Authorization: ' Bearer ' + token
+                    }
+                })
                .then(response =>{
                    alert(response.data.message);
                    this.closeEdit();
                    this.getEventSource();
-                   setTimeout(() => {this.isLoading = false},2000)
+                   setTimeout(() => {this.isLoading = false},1000);
                })
                .catch(function (error){
                    if(error.response){
-                       if (error.response.status == 404) {
+                       if (error.response.status == 422) {
                            mythis.errorList = error.response.data.errors;
+                           setTimeout(() => {mythis.isLoading = false},1000);
                        }
                        else if (error.request) {
                            console.log(error.request);
@@ -474,101 +460,114 @@
             updateRemind() {
                 this.isLoading =true;
                 var mythis = this;
+                const token = localStorage.getItem(TOKEN);
                 var edit = '/api/remind/edit/' + this.indexToUpdate;
-                axios.put(edit, this.editRemind)
+                axios.put(edit, this.editRemind,{
+                    headers:{
+                        Authorization: ' Bearer ' + token
+                    }
+                })
                .then(response =>{
                    alert(response.data.message);
                    this. closeEditRemind();
-                   this.loading = false
                    this.getEventSource();
-                   setTimeout(() => {this.isLoading = false},2000)
+                   setTimeout(() => {this.isLoading = false},2000);
 
                })
                .catch(function (error){
                    if(error.response){
-                       if (error.response.status == 404) {
+                        if (error.response.status == 422) {
                            mythis.errorList = error.response.data.errors;
-                       }
-                       else if (error.request) {
+                           setTimeout(() => {mythis.isLoading = false},1000);
+                        }
+                        else if (error.request) {
                            console.log(error.request);
-                       } else {
-                           console.log('Error', error.message);
-                       }
+                        } else {
+                            console.log('Error', error.message);
+                        }
                    }
                })
             },
 
             deleteEvent() {
                 this.isLoading =true;
+                const token = localStorage.getItem(TOKEN);
                 var remove = '/api/event/edit/' + this.indexToUpdate;
-                axios.delete(remove)
+                axios.delete(remove,{
+                    headers:{
+                        Authorization: ' Bearer ' + token
+                    }
+                })
                .then(response =>{
                    alert(response.data.message);
                    this.closeEdit();
                    this.getEventSource();
-                   setTimeout(() => {this.isLoading = false},2000)
+                   setTimeout(() => {this.isLoading = false},2000);
                })
                .catch(function (error){
-                  console.log('Không thể xóa')
+                  console.log('Không thể xóa');
                })
             },
            
             logout(){
-                localStorage.removeItem('token')
-                this.$router.push("/")
-            },
-            reset(){
-                this.newEvent = {
-                    title:null,
-                    start:null,
-                    end:null,
-                    desc:null,
-                    color:null
-                }
+                localStorage.removeItem('token');
+                this.$router.push("/");
             },
             getDay() {
 				let calendarApi = this.$refs.fullCalendar.getApi();
                 calendarApi.changeView('timeGridDay');
-                this.datename = "Ngày"
+                this.datename = "Ngày";
 			},
             getMonth() {
 				let calendarApi = this.$refs.fullCalendar.getApi();
                 calendarApi.changeView('dayGridMonth');
-                this.datename = "Tháng"
+                this.datename = "Tháng";
 			},
 			getYears() {
 				let calendarApi = this.$refs.fullCalendar.getApi();
                 calendarApi.changeView('multiMonthYear');
-                this.datename = "Năm"
+                this.datename = "Năm";
 			},
-			getNext() {
-				let calendarApi = this.$refs.fullCalendar.getApi()
-                calendarApi.next()
+			getNext(e) {
+				let calendarApi = this.$refs.fullCalendar.getApi();
+                calendarApi.next();
+                
 			},
-			getPrev() {
-				let calendarApi = this.$refs.fullCalendar.getApi()
-                calendarApi.prev()
+			getPrev(e) {
+				let calendarApi = this.$refs.fullCalendar.getApi();
+                calendarApi.prev();
 			},
 			getToday() {
-				let calendarApi = this.$refs.fullCalendar.getApi()
-                calendarApi.today()
+				let calendarApi = this.$refs.fullCalendar.getApi();
+                calendarApi.today();
+                
 			},
             closeCR(){
-                this.showRemind = false
+                this.showRemind = false;
+                this.errorList = "";
             },
             showCR(){
-               this.showRemind = true
+               this.showRemind = true;
                this.showModel = false;
             },
             showEditRemind(){
-                this.EditRemind = true
+                this.EditRemind = true;
                 this.EditEvent = false;
             },
             closeModal(arg){
                 this.showModel = false;
+                this.errorList = "";
             },
             closeEdit(arg){
                 this.EditEvent = false;
+            },
+            onDayClick(e){
+                const date = new Date().toString();
+                let calendarApi = this.$refs.fullCalendar.getApi();
+                calendarApi.gotoDate(e.id);            
+            },
+            closeEditRemind(){
+               this.EditRemind = false;
             },
         },
         watch: {

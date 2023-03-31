@@ -2,9 +2,9 @@
     <div class="main-form">
             <div class="form_login">
                 <h2>Register</h2>
-                <ul v-if="Object.keys(errorList).length > 0">
-                    <li  style="color: red;display: block;" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
-                 </ul>
+                <ul v-if="Object.keys(errorList).length > 0" class="error-login">
+                   <li class="classEoror" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
+                </ul>
                 <form >
                     <div class="form_login-sub">
                         <input type="text" class="text"  placeholder="Enter your name" v-model="form.name" maxlength="30"/>
