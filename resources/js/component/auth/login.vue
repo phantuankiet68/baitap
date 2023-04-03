@@ -2,15 +2,18 @@
     <div class="main-form" >
            <div class="form_login">
                <h2>Login</h2>
-                <ul v-if="Object.keys(errorList).length > 0" class="error-login">
-                   <li class="classEoror" v-for="(error, index) in errorList" :key="index">{{ error[0] }}</li>
-                </ul>
+                <div class="error-waring">
+                    <span class="error-fix" v-for="(error, index) in errorList" :key="index" >{{ error }}</span>
+                 </div>
                <form >
                    <div class="form_login-sub">
                        <input type="email" class="text"  v-model="form.email"   autocomplete="new-eamil"  maxlength="30" placeholder="Enter your email" />
                        <div class="form_login-icon">
                           <i class="fa-solid fa-envelope before"></i>
                        </div>
+                   </div>
+                   <div class="error">
+                        <span v-for="(error, index) in errorEmail" :key="index">{{ error }}</span>
                    </div>
                   <div class="form_login-sub">
                         <input :type="passwordFieldType" class="password" name="password"  v-model="form.password" placeholder="Mật khẩu"   autocomplete="new-password" maxlength="30" />
@@ -22,6 +25,9 @@
                            <i class="fa-solid fa-eye-slash after" @click="hidenEyePass" v-if="hideEye"></i>
                         </div>
                     </div>
+                    <div class="error">
+                        <span v-for="(error, index) in errorPassword" :key="index">{{ error }}</span>
+                   </div>
                    <div class="clear"></div>
                    <div class="submit_login">
                        <input type="submit" value="Sign In" @click.prevent="login">
@@ -51,6 +57,8 @@
        data(){
            return {
                errorList:'',
+               errorEmail:'',
+               errorPassword:'',
                form:{
                     email: '',
                     password: '',
@@ -96,6 +104,11 @@
                 .catch(function (error){
                     if(error.response){
                         if (error.response.status == 422) {
+                            mythis.errorEmail = error.response.data.errors.email;
+                            mythis.errorPassword = error.response.data.errors.password;
+                            mythis.isLoading = false;
+                        }
+                        else if (error.response.status == 401) {
                             mythis.errorList = error.response.data.errors;
                             mythis.isLoading = false;
                         }
